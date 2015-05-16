@@ -836,6 +836,7 @@ Start:
 	ENDIF
 	ERRORLEVEL +302
 	bcf		STATUS, RP0			; go back to data bank 0
+		call	SerialInit
 
 		clrf	progflags
 		clrf	ACKcount
@@ -1731,6 +1732,10 @@ SerialLoad:
 	movwf	sendbitcount
 	return
 
+SerialInit:
+	bsf	SPIO, SerialTX
+	return
+
 ;--------------------------------------------------------------------------
 ; SerialSend - Sends 19.2Kbps 8 bit serial data using bit banging.
 ;	Interrupts will be disabled for roughly 521us by this routine.
@@ -1750,7 +1755,7 @@ SerialSend:
 
 	; initially send start bit
 LowBit:
-	iorlw	(1<<SerialTX)
+	andlw	~(1<<SerialTX)  ; 1
 	movwf	SPIO			; 1
 	call	Wait22
 	call	Wait21
@@ -1764,7 +1769,7 @@ BitCount:
 	btfss	STATUS, C       ; 1 2
 	goto	LowBit          ; 2
 
-	andlw	~(1<<SerialTX)  ; 1
+	iorlw	(1<<SerialTX)
 	nop
 	movwf	SPIO			; 1
 	call	Wait21
@@ -1773,7 +1778,7 @@ BitCount:
 
 StopBit:
 	goto    $+1				; 2
-	andlw	~(1<<SerialTX)
+	iorlw	(1<<SerialTX)
 	movwf	SPIO
 	bsf		INTCON, GIE		; enable interrupts, timing critical code done
 	call	Wait22
