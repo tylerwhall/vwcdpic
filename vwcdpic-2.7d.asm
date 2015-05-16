@@ -363,7 +363,7 @@
 ; PIC GP1 -> Archos Jukebox RX (9600bps serial with weak pull-up)
 ; Make sure PIC and MP3 Player have common GND.
 ;--------------------------------------------------------------------------
-#define VWCDPIC_2X
+;#define VWCDPIC_2X
 
 ;--------------------------------------------------------------------------
 ; VWCDPIC 3.x PIC12F629/PIC12F675/PIC12F683 Connections
@@ -377,7 +377,7 @@
 ; PIC GP5 -> Archos Jukebox RX (9600bps serial with weak pull-up)
 ; Make sure PIC and MP3 Player have common GND.
 ;--------------------------------------------------------------------------
-;#define VWCDPIC_3X
+#define VWCDPIC_3X
 
 ;;; This code targets several different PICmicro chips, you must select
 ;;; which PIC you are using with the command line setting to assembler.
